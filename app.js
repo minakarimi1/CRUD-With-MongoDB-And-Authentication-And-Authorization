@@ -6,7 +6,7 @@ const app = express()
 const port = process.env.PORT || 3000;
 
 app.use(express.json()) //body parser
-app.use(express.urlencoded({ extended: true })); // parse data comes from HTML form
+app.use(urlencoded({ extended: true })); // parse data comes from HTML form
 app.use(helmet())
 app.use(morgan("tiny"))
 
