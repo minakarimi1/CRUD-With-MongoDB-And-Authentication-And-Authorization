@@ -1,4 +1,4 @@
-const homeControler =(req, res) => {
+const getHomeController =(req, res) => {
   res.send("wellcom to home page ");
 }
-export default [homeControler]
+export default {getHomeController};
