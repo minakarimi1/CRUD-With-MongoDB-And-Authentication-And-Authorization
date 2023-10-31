@@ -10,3 +10,16 @@ const userSchema = new mongoose.Schema ({
   password: {type: String, require: true},
 });
 const User = mongoose.model('User',userSchema);
+
+export async function insertUser(name , email , password){
+const user = new User ({
+  name,
+  email,
+  password,
+})
+
+const result = await user.save();
+console.log(result);
+return result;
+
+}
