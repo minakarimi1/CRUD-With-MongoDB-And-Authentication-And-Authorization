@@ -1,4 +1,5 @@
 import { insertUser } from '../model/mongo-db.js';
+import { getusers } from '../model/mongo-db.js';
 import 'dotenv/config'
 //register controler
 const register = async (req, res, next) => {
@@ -14,4 +15,9 @@ const register = async (req, res, next) => {
     message: "ok",
   });
 };
-export default {register}
+//get users
+const getUsers = async (req,res)=>{
+  const result = await getusers()
+  res.json({data:result, message:"ok",code:"200"})
+}
+export default {register,getUsers}
