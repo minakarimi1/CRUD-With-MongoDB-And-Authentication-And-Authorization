@@ -1,5 +1,6 @@
-import { insertUser } from '../model/mongo-db.js';
+import { insertUser,getUserEmail } from '../model/mongo-db.js';
 import 'dotenv/config'
+
 //register controler
 const register = async (req, res, next) => {
   const result = await insertUser(
