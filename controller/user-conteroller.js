@@ -19,12 +19,16 @@ const register = async (req, res, next) => {
       .required()
       .messages({ "pass_min": process.env.pass_min || "" }),
   };
-  //add object schema to JOi from up validate
+
+//add object schema to JOi from up validate
 const validateResult = Joi.object(schema).validate(req.body);
+if (validateResult.error) {
+  return res.send(validateResult.error.details[0].message);
+}
 
-  //check DB for no repitly Email
-
-
+//check DB for no repitly Email
+const user = await getUserEmail(req.body.email);
+if (user) return res.json({ data: null, message: "ایمیل تکراری می باشد" });
 
 
   // add to database
