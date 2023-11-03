@@ -30,16 +30,18 @@ if (validateResult.error) {
 const user = await getUserEmail(req.body.email);
 if (user) return res.json({ data: null, message: "ایمیل تکراری می باشد" });
 
+//hashing passwords
+const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
   // add to database
   const result = await insertUser(
     req.body.name,
     req.body.email,
-    req.body.password
+    hashedPassword
   );
   console.log(result);
   res.json({
-    data: result,
+    data: _.pick(result,"name","email"),
     code: "200",
     message: "ok",
   });
