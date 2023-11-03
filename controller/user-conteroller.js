@@ -3,6 +3,8 @@ import "dotenv/config";
 import Joi from "joi";
 import _ from "lodash";
 import bcrypt from "bcrypt";
+import jwt from 'jsonwebtoken';
+import { token } from "morgan";
 
 //register controler
 const register = async (req, res, next) => {
@@ -40,10 +42,16 @@ const hashedPassword = await bcrypt.hash(req.body.password, 10);
     hashedPassword
   );
   console.log(result);
-  res.json({
-    data: _.pick(result,"name","email"),
-    code: "200",
+  
+  //creare token
+  const token = jwt.sign({ id: result.id },process.env.SECRET_KEY );
+
+  res.header("Authorization", token).json({
+    data: _.pick(result,["id", "name","email"]),
+    code: 200,
     message: "ok",
   });
+
 };
+
 export default { register };
