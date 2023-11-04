@@ -53,5 +53,15 @@ const hashedPassword = await bcrypt.hash(req.body.password, 10);
   });
 
 };
-
-export default { register };
+//login controler
+const login = async (req, res, next) => {
+  const schema = {
+    email: Joi.string().email().required(),
+    password: Joi.string().min(5).max(100).required(),
+  };
+  const validateResalt = Joi.object(schema).validate(req.body);
+  if (validateResalt.error) {
+    return res.send(validateResalt.error.details[0].message);
+  }
+}
+export default { register,login };
