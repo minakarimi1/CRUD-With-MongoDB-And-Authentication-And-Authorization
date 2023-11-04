@@ -57,11 +57,38 @@ const hashedPassword = await bcrypt.hash(req.body.password, 10);
 const login = async (req, res, next) => {
   const schema = {
     email: Joi.string().email().required(),
-    password: Joi.string().min(5).max(100).required(),
+    password: Joi.string().min(6).max(100).required(),
   };
   const validateResalt = Joi.object(schema).validate(req.body);
   if (validateResalt.error) {
     return res.send(validateResalt.error.details[0].message);
   }
+
+//check email
+
+const validUser = await getUserEmail(req.body.email)
+if(!validUser){
+  return res.status(400).json({data:null , message: "یوزر نیم یا پسورد اشتباه می باشد"})
+};
+
+
+//check password
+const validPassword = await bcrypt.compare(req.body.password , validUser.password);
+if(!validPassword){
+  return res.status(400).json({data:null, message:"یوزر نیم یا پسورد اشتباه می باشد"})
+};
+
+//check token
+const validToken = await jwt.sign(
+  {id: validUser.id},
+  process.env.SECRET_KEY
+  );
+
+  //login
+  res.header("Athurization", validToken)
+  .status(200)
+  .json({code: 200, message: 'login'})
+
+
 }
 export default { register,login };
