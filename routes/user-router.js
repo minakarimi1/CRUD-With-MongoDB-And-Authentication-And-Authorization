@@ -4,4 +4,5 @@ const router = express.Router()
 
 
 router.post('/register',userConteroller.register)
+router.post('/login',userConteroller.login)
 export default router;
